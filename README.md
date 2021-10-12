@@ -9,7 +9,7 @@
   </a>
 </p>
 
-> A set of programs to collect and improve my go knowledge
+> A set of programs to collect and improve my Go Language Knowledge
 
 ## Author
 
