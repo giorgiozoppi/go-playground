@@ -1,29 +1,28 @@
+package mergesort2
+
 import (
-	"testing"
-	"github.com/stretchr/testify/assert"
 	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestArrayMerge(t *testing.T) {
-	var tests = []struct {
-		a, b int
-		want int
+	tests := []struct {
+		unordered []int
+		sorted    []int
 	}{
-		{0, 1, 0},
-		{1, 0, 0},
-		{2, -2, -2},
-		{0, -1, -1},
-		{-1, 0, -1},
+		{unordered: []int{15, 8, 13, 30, 21}, sorted: []int{8, 13, 15, 21, 30}},
+		{unordered: []int{15, 9}, sorted: []int{9, 15}},
 	}
-	for _, tt := range tests {
+	for k, tt := range tests {
 
-		testname := fmt.Sprintf("%d,%d", tt.a, tt.b)
+		testname := fmt.Sprintf("sorting test %d", k)
 		t.Run(testname, func(t *testing.T) {
-			ans := IntMin(tt.a, tt.b)
-			if ans != tt.want {
-				t.Errorf("got %d, want %d", ans, tt.want)
+			sortedResult := MergeSort(tt.unordered)
+			for idx, value := range sortedResult {
+				assert.Equal(t, tt.sorted[idx], value)
 			}
 		})
 	}
 }
-	
