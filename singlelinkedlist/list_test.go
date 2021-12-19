@@ -1,30 +1,20 @@
 package list
 
 import (
-	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
-func TestCreateList(t *testing.T) {
-	tests := []struct {
-		dataset []int
-	}{
-		{dataset: []int{100, 15, 8, 13, 30, 21, 39, 79, 80, 110}},
-		{dataset: []int{200, 35, 52, 31, 53, 28, 54, 70, 80, 110}},
-	}
-	var root *ListNode = nil
-	for k, tt := range tests {
-		testcase := fmt.Sprintf("binary search tree test %d\n", k)
-		root = nil
-		currentData := tt.dataset
-		t.Run(testcase, func(t *testing.T) {
-			for item := range currentData {
-				if root != nil {
-					root.AddTail(currentData[item])
-				} else {
-					root = NewListNode(currentData[item])
-				}
-			}
-		})
-	}
+func TestCreateLoopedList(t *testing.T) {
+	root := NewListNode(3)
+	second := NewListNode(5)
+	third := NewListNode(8)
+	fourth := NewListNode(10)
+	root.Next = second
+	second.Next = third
+	third.Next = fourth
+	fourth.Next = second
+	item := HasCycle(root)
+	require.Equal(t, item, true)
 }
