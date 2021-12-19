@@ -1,5 +1,7 @@
 package list
 
+import "fmt"
+
 type ListNode struct {
 	Data int
 	Next *ListNode
@@ -52,18 +54,37 @@ func HasCycle1(head *ListNode) *ListNode {
 	return nil
 }
 
-// what if we want O(1) space, O(N) times
+// what if we want O(1) space, O(1) times
+// the idea is that we have to use two iterators:
+// a slow one and a fast one
+// In each iteration we advance the slow iterator by one
+// and the fast iterator by two.
+// the list has cycle if the slow iterator and the fast one will meet.
 func HasCycle(head *ListNode) bool {
 	fast := head
 	slow := head
 	for fast != nil && fast.Next != nil && fast.Next.Next != nil {
+		fmt.Printf("slow = %v, fast = %v\n", slow, fast)
+		slow, fast = slow.Next, fast.Next.Next
+		fmt.Printf("slow = %v, fast = %v\n", slow, fast)
 		if slow == fast {
 			// there is a cycle
 			// we've to find the start of the cycle
 			return true
 		}
-		slow, fast = slow.Next, fast.Next.Next
-
 	}
 	return false
+}
+
+func main() {
+	root := NewListNode(3)
+	second := NewListNode(5)
+	third := NewListNode(8)
+	fourth := NewListNode(10)
+	root.Next = second
+	second.Next = third
+	third.Next = root
+	fourth.Next = nil
+	item := HasCycle(root)
+	fmt.Printf("%v\n", item)
 }
