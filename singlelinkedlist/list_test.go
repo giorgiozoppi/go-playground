@@ -1,4 +1,4 @@
-package list
+package slist
 
 import (
 	"testing"
@@ -26,4 +26,23 @@ func TestCreateSingleList(t *testing.T) {
 	require.Equal(t, root.Next.Data, 20)
 	require.Equal(t, root.Next.Next.Data, 30)
 
+}
+
+func TestSearchSingleList(t *testing.T) {
+	root := NewListNode(20)
+	root.AddTail(20)
+	root.AddTail(30)
+	node := root.Search(20)
+	require.NotEqual(t, node, nil)
+	require.Equal(t, node.Data, 20)
+}
+func TestKToLast(t *testing.T) {
+	root := NewListNode(20)
+	root.AddTail(20)
+	root.AddTail(30)
+	root.AddTail(50)
+	root.AddTail(80)
+	found, err := FindKToLast(root, 2)
+	require.Equal(t, err, nil)
+	require.Equal(t, 50, found)
 }

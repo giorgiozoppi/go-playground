@@ -1,6 +1,9 @@
-package list
+package slist
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type ListNode struct {
 	Data int
@@ -30,6 +33,24 @@ func (l *ListNode) AddTail(data int) {
 	node := NewListNode(data)
 	l.Next = node
 }
+func (l *ListNode) Search(data int) *ListNode {
+	for ; l.Next != nil; l = l.Next {
+		if l.Data == data {
+			return l
+		}
+	}
+	return nil
+}
+func (l *ListNode) Delete(node *ListNode) {
+	prev := l
+	for current := l; current.Next != nil; current = current.Next {
+		if current == node {
+			prev.Next = current.Next
+			current = nil
+		}
+		prev = current
+	}
+}
 func (l *ListNode) Add(data int) {
 	node := NewListNode(data)
 	tmp := l.Next
@@ -42,7 +63,7 @@ func (l *ListNode) Add(data int) {
 * and the node at the start of the cycle if a cycle is present
  */
 // O(N) time, O(1) space
-func HasCycle1(head *ListNode) *ListNode {
+func HasCycleWithNode(head *ListNode) *ListNode {
 	history := make(map[*ListNode]bool)
 	for current := head; current.Next != nil; current = current.Next {
 		if _, ok := history[current.Next]; ok {
@@ -76,15 +97,21 @@ func HasCycle(head *ListNode) bool {
 	return false
 }
 
-func main() {
-	root := NewListNode(3)
-	second := NewListNode(5)
-	third := NewListNode(8)
-	fourth := NewListNode(10)
-	root.Next = second
-	second.Next = third
-	third.Next = root
-	fourth.Next = nil
-	item := HasCycle(root)
-	fmt.Printf("%v\n", item)
+/// Write an algorithm to find the kth to the last element of a single linked list
+func FindKToLast(n *ListNode, k int) (int, error) {
+	count := 0
+	current := n
+	for ; current != nil; current = current.Next {
+		count++
+	}
+	pos := count - k
+	if pos < 0 {
+		return 0, errors.New("k exceeded array size")
+	}
+	count = 0
+	current = n
+	for i := 0; i < pos; i++ {
+		current = current.Next
+	}
+	return current.Data, nil
 }
